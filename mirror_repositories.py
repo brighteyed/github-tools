@@ -6,7 +6,8 @@ import json
 import sys
 import os
 
-gitea_url = "http://localhost:3000/api/v1"
+
+gitea_url = "http://localhost:5000/api/v1"
 os.environ['NO_PROXY'] = 'localhost'
 
 with open("./gitea_token") as gitea_token_file:
