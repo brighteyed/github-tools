@@ -7,30 +7,23 @@ import sys
 import os
 
 
-gitea_url = "http://localhost:5000/api/v1"
-os.environ['NO_PROXY'] = 'localhost'
-
-with open("./gitea_token") as gitea_token_file:
-    gitea_token = gitea_token_file.read().strip()
+GITEA_URL = f"{os.environ['GITEA_URL']}/api/v1"
 
 session = requests.Session()
 session.headers.update({
-    "Authorization": f"token {gitea_token}",
+    "Authorization": f"token {os.environ['GITEA_TOKEN']}",
     "Content-type": "application/json"
 })
 
-resp = session.get(f"{gitea_url}/user")
+resp = session.get(f"{GITEA_URL}/user")
 if resp.status_code != 200:
     print("Cannot get user details", file=sys.stderr)
     exit(1)
 
 gitea_uid = json.loads(resp.text)["id"]
 
-github_username = "brighteyed"
-with open("./github_token") as github_token_file:
-    github_token = github_token_file.read().strip()
-
-gh = Github(github_token)
+GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+gh = Github(GITHUB_TOKEN)
 
 for repo in gh.get_user().get_repos():
     if not repo.fork:
@@ -44,11 +37,11 @@ for repo in gh.get_user().get_repos():
         }
 
         if repo.private:
-            m["clone_addr"] = repo.clone_url.replace("github.com", f"{github_username}:{github_token}@github.com")
+            m["clone_addr"] = repo.clone_url.replace("github.com", f"{os.environ['GITHUB_USERNAME']}:{GITHUB_TOKEN}@github.com")
 
         jsonstring = json.dumps(m)
 
-        r = session.post(f"{gitea_url}/repos/migrate", data=jsonstring)
+        r = session.post(f"{GITEA_URL}/repos/migrate", data=jsonstring)
         if r.status_code != 201:            # if not created
             if r.status_code == 409:        # already exists
                 continue
