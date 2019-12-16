@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Build and publish an image
+      uses: elgohr/Publish-Docker-Github-Action@master
+
+      with:
+        name: brighteyed/github-tools/mirror_repositories
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}    
+        registry: docker.pkg.github.com
