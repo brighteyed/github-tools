@@ -1,15 +1,13 @@
-FROM python:3
+FROM python:3-alpine
 
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+RUN apk update && apk add gcc libc-dev libffi-dev \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apk del gcc libc-dev libffi-dev
 
-ENV GITEA_URL="http://localhost:3000" \
-    GITEA_TOKEN="changeme" \
-    GITHUB_USERNAME="changeme" \
-    GITHUB_TOKEN="changeme"
+COPY mirror_repositories.py ./
 
 CMD [ "python", "./mirror_repositories.py" ]
