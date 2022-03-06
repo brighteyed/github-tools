@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  MIRROR_IMAGE_NAME: brighteyed/gh-mirror
 
 jobs:
   build-and-push-image:
@@ -40,16 +40,17 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: meta
+        id: mirror
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.MIRROR_IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: docker/mirror/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.mirror.outputs.tags }}
+          labels: ${{ steps.mirror.outputs.labels }}

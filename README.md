@@ -12,7 +12,7 @@ You can use docker to mirror Github repositories to Gitea:
                     -e GITHUB_TOKEN="changeme" \
                     -e GITEA_URL="changeme" \
                     -e GITEA_TOKEN="changeme" \
-                    ghcr.io/brighteyed/github-tools:latest
+                    ghcr.io/brighteyed/gh-mirror:latest
 ```
 
 ### Docker compose
@@ -49,7 +49,7 @@ services:
   ofelia:
     image: mcuadros/ofelia:latest
     command: daemon --docker
-    container_name: github-tools
+    container_name: gh-mirror
     networks:
       - gitea
     volumes:
@@ -57,7 +57,7 @@ services:
     labels:
       - "ofelia.job-run.mirror.schedule=0 0 2 * * *"
       - "ofelia.job-run.mirror.network=gitea"
-      - "ofelia.job-run.mirror.image=ghcr.io/brighteyed/github-tools"
+      - "ofelia.job-run.mirror.image=ghcr.io/brighteyed/gh-mirror"
       - ofelia.job-run.mirror.environment=["GITEA_URL=${GITEA_URL}", "GITEA_TOKEN=${GITEA_TOKEN}", "GITHUB_USERNAME=${GITHUB_USERNAME}", "GITHUB_TOKEN=${GITHUB_TOKEN}"]
 
 networks:
