@@ -15,9 +15,9 @@ RUN apk update && apk add gcc libc-dev libffi-dev \
     && apk del gcc libc-dev libffi-dev
 
 COPY --from=build /go/bin/ghq /usr/local/bin/
-COPY ghq_starred.py ./
+COPY gh_starred.py ./
 
 ENV GHQ_ROOT="/ghq"
 VOLUME ${GHQ_ROOT}
 
-CMD [ "python", "./ghq_starred.py" ]
+CMD [ "python", "./gh_starred.py" ]
