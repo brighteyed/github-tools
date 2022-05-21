@@ -14,6 +14,10 @@ docker run --rm -e GITHUB_USENAME="changeme" \
                 --name=gh-mirror \
                 ghcr.io/brighteyed/gh-mirror:latest
 ```
+To update Github token execute `update_token.py`:
+```
+docker run --rm -v "/path/to/gitea/data/git/repositories:/repositories" ghcr.io/brighteyed/gh-mirror:latest update_token.py --old-token="<old_token>" --new-token="<new_token>"
+```
 
 ## Clone starred repositories
 
