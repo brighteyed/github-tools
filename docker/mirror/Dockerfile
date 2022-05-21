@@ -9,5 +9,9 @@ RUN apk update && apk add gcc libc-dev libffi-dev \
     && apk del gcc libc-dev libffi-dev
 
 COPY gh_mirror.py ./
+COPY update_token.py ./
 
-CMD [ "python", "./gh_mirror.py" ]
+VOLUME [ "/repositories" ]
+
+ENTRYPOINT [ "python" ]
+CMD [ "gh_mirror.py" ]
