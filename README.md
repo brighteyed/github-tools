@@ -7,7 +7,7 @@ A collection of tools to automate some activities at Github:
 ## Mirror repositories
 You can use docker to mirror Github repositories to Gitea:
 ```
-docker run --rm -e GITHUB_USENAME="changeme" \
+docker run --rm -e GITHUB_USERNAME="changeme" \
                 -e GITHUB_TOKEN="changeme" \
                 -e GITEA_URL="changeme" \
                 -e GITEA_TOKEN="changeme" \
